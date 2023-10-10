@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void suma_matrices(int matriz1[][100], int matriz2[][100], int resultado[][100], int filas, int columnas) {
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            resultado[i][j] = matriz1[i][j] + matriz2[i][j];
+        }
+    }
+}
+
+void resta_matrices(int matriz1[][100], int matriz2[][100], int resultado[][100], int filas, int columnas) {
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            resultado[i][j] = matriz1[i][j] - matriz2[i][j];
+        }
+    }
+}
+
+void multiplicacion_matrices(int matriz1[][100], int matriz2[][100], int resultado[][100], int filas1, int columnas1, int columnas2) {
+    for (int i = 0; i < filas1; i++) {
+        for (int j = 0; j < columnas2; j++) {
+            resultado[i][j] = 0;
+            for (int k = 0; k < columnas1; k++) {
+                resultado[i][j] += matriz1[i][k] * matriz2[k][j];
+            }
+        }
+    }
+}
+
+void diagonal(int matriz[][100], int filas, int columnas) {
+    printf("Elementos en la diagonal principal:\n");
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            if (i == j) {
+                printf("%d ", matriz[i][j]);
+            }
+        }
+    }
+    printf("\n");
+}
+
+void suma_triang_sup(int matriz[][100], int filas, int columnas) {
+    int suma = 0;
+    for (int i = 0; i < filas; i++) {
+        for (int j = i; j < columnas; j++) {
+            suma += matriz[i][j];
+        }
+    }
+    printf("La suma de los elementos de la triangular superior es: %d\n", suma);
+}
+
+void llenar_matriz_aleatoria(int matriz[][100], int filas, int columnas) {
+    srand(time(NULL));
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            matriz[i][j] = rand() % 10;
+        }
+    }
+}
+
+void imprimir_matriz(int matriz[][100], int filas, int columnas) {
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int matriz1[100][100], matriz2[100][100], resultado[100][100];
+    int filas, columnas;
+    char opcion;
+
+    printf("Ingrese el numero de filas de las matrices: ");
+    scanf("%d", &filas);
+    printf("Ingrese el numero de columnas de las matrices: ");
+    scanf("%d", &columnas);
+
+    llenar_matriz_aleatoria(matriz1, filas, columnas);
+    llenar_matriz_aleatoria(matriz2, filas, columnas);
+
+    do {
+        printf("\n");
+        printf("Opciones:\n");
+        printf("1. Suma de matrices\n");
+        printf("2. Resta de matrices\n");
+        printf("3. Multiplicacion de matrices\n");
+        printf("4. Diagonal principal\n");
+        printf("5. Suma de elementos de la triangular superior\n");
+        printf("6. Terminar programa\n");
+        printf("Ingrese una opcion: ");
+        fflush(stdin);
+        scanf("%c", &opcion);
+
+        switch (opcion) {
+            case '1':
+                printf("\nMatriz 1:\n");
+                imprimir_matriz(matriz1, filas, columnas);
+                printf("\nMatriz 2:\n");
+                imprimir_matriz(matriz2, filas, columnas);
+                printf("\nResultado de la suma:\n");
+                suma_matrices(matriz1, matriz2, resultado, filas, columnas);
+                imprimir_matriz(resultado, filas, columnas);
+                break;
+            case '2':
+                printf("\nMatriz 1:\n");
+                imprimir_matriz(matriz1, filas, columnas);
+                printf("\nMatriz 2:\n");
+                imprimir_matriz(matriz2, filas, columnas);
+                printf("\nResultado de la resta:\n");
+                resta_matrices(matriz1, matriz2, resultado, filas, columnas);
+                imprimir_matriz(resultado, filas, columnas);
+                break;
+            case '3':
+                printf("\nMatriz 1:\n");
+                imprimir_matriz(matriz1, filas, columnas);
+                printf("\nMatriz 2:\n");
+                imprimir_matriz(matriz2, filas, columnas);
+                printf("\nResultado de la multiplicación:\n");
+                multiplicacion_matrices(matriz1, matriz2, resultado, filas, columnas, columnas);
+                imprimir_matriz(resultado, filas, columnas);
+                break;
+            case '4':
+                printf("\nMatriz:\n");
+                imprimir_matriz(matriz1, filas, columnas);
+                diagonal(matriz1, filas, columnas);
+                break;
+            case '5':
+                printf("\nMatriz:\n");
+                imprimir_matriz(matriz1, filas, columnas);
+                suma_triang_sup(matriz1, filas, columnas);
+                break;
+            case '6':
+                printf("Programa terminado.\n");
+                break;
+            default:
+                printf("Opción inválida. Por favor, ingrese una opción válida.\n");
+                break;
+        }
+
+    } while (opcion != '6');
+
+    return 0;
+}
